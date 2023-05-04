@@ -2,7 +2,6 @@ const tmi = require("tmi.js");
 const config = require("./config.json");
 const [
   makeSeinfeldJoke,
-  makeDToshJoke,
   somethingThoughtful,
   talkToHucksleyBot,
   butts,
