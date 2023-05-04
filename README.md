@@ -3,9 +3,15 @@
 Super simple twitch bot that uses chatGPT
 
 config.json is the file that you will configure the bot.
+
 Configs:
+
+Rename config.example.json to config.json
+
 twitchPassword -> https://twitchapps.com/tmi/
+
 gptKey -> https://platform.openai.com/account/api-keys
+
 twitchClientID -> https://dev.twitch.tv/console
 
 Install:
