@@ -3,5 +3,9 @@
   "twitchPassword": "TWITCH_PASSWORD",
   "channels": ["CHANNEL_NAME"],
   "gptKey": "CHAT_GPT_KEY",
-  "twitchClientID": "TWITCH_CLIENT_ID"
+  "twitchClientID": "TWITCH_CLIENT_ID",
+  "discordEnabled": "false",
+  "discordToken": "DISCORD_TOKEN",
+  "clientId": "BOT_CLIENT_ID",
+  "guildId": "SERVER_ID"
 }

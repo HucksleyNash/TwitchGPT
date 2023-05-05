@@ -102,10 +102,14 @@ async function riddleMeThis(username) {
     messages: [
       {
         role: "user",
-        content: `Come up with a random riddle and put the answer of the riddle as A: [answer of the riddle]`,
+        content: `Create a riddle that uses wordplay and puns 
+        and is no longer than 110 tokens in length. 
+        The riddle should have a easy difficulty level and 
+        the answer should be something common and easily recognizable. 
+        Provide the answer to the riddle in the form of A: [riddle answer]`,
       },
     ],
-    temperature: 1.5,
+    temperature: 0.8,
     max_tokens: 150,
     top_p: 1,
     frequency_penalty: 0.0,

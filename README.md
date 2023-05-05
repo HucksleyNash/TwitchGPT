@@ -14,6 +14,12 @@ gptKey -> https://platform.openai.com/account/api-keys
 
 twitchClientID -> https://dev.twitch.tv/console
 
+discordToken -> https://discord.com/developers/applications
+
+clientId -> https://discord.com/developers/applications
+
+guildId -> https://support.discord.com/hc/en-us/articles/206346498
+
 Install:
 Check out the repository using git.
 
