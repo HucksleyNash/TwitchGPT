@@ -9,14 +9,7 @@
       "request": "launch",
       "name": "Launch Program",
       "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}\\src\\index.js"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch huggingface",
-      "skipFiles": ["<node_internals>/**"],
-      "program": "${workspaceFolder}\\src\\huggingFace.js"
+      "program": "${workspaceFolder}\\server\\src\\index.js"
     }
   ]
 }

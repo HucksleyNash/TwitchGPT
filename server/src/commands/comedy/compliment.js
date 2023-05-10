@@ -1,16 +1,10 @@
 const { SlashCommandBuilder } = require("discord.js");
-const [
-  makeSeinfeldJoke,
-  somethingThoughtful,
-  talkToHucksleyBot,
-  butts,
-  riddleMeThis,
-  answerMeThis,
-] = require("../../gpt.js");
+const commands = require("../../../commands.json");
+const { runPrompt } = require("../../gpt.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("compliment")
-    .setDescription("Replies with Pong!")
+    .setDescription("compliments a person")
     .addStringOption((option) =>
       option
         .setName("person")
@@ -22,7 +16,7 @@ module.exports = {
       interaction.options.getString("person") ?? "No person Provided";
     if (person !== "No person Provided") {
       interaction.reply("Complement incoming prepare for kindness!");
-      somethingThoughtful(person)
+      runPrompt(person, commands.commands["!compliment"].prompt)
         .then((resp) => {
           if (resp) {
             interaction.editReply(resp);

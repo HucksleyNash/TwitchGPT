@@ -1,12 +1,6 @@
 const { SlashCommandBuilder } = require("discord.js");
-const [
-  makeSeinfeldJoke,
-  somethingThoughtful,
-  talkToHucksleyBot,
-  butts,
-  riddleMeThis,
-  answerMeThis,
-] = require("../../gpt.js");
+const commands = require("../../../commands.json");
+const { runPrompt } = require("../../gpt.js");
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("seinfeld")
@@ -21,7 +15,7 @@ module.exports = {
     const topic = interaction.options.getString("topic") ?? "No Topic Provided";
     if (topic !== "No Topic Provided") {
       interaction.reply("Working on a silly joke just for you darling");
-      makeSeinfeldJoke(topic)
+      runPrompt(topic, commands.commands["!seinfeld"].prompt)
         .then((resp) => {
           if (resp) {
             interaction.editReply(resp);
