@@ -1,6 +1,6 @@
 const path = require("path");
 const fs = require("fs");
-let commands;
+const { getCommands } = require("./commandManager");
 
 const tmi = require("tmi.js");
 const config = require("./config.json");
@@ -10,8 +10,9 @@ const {
   answerMeThis,
   chatWithBot,
 } = require("./gpt.js");
-const filePath = path.join(__dirname, "../commands.json");
 
+const filePath = path.join(__dirname, "../commands.json");
+let commands = getCommands();
 let client;
 
 const errMessage =
@@ -50,29 +51,36 @@ function onMessageHandler(target, context, msg, self) {
   const input = msg.trim();
 
   let data = input.split('"');
-
-  if (commands.commands.hasOwnProperty(data[0].trim().toLowerCase())) {
-    runPrompt(data[1], commands.commands[data[0].trim().toLowerCase()].prompt)
-      .then((resp) => {
-        if (resp) {
-          client.say(target, resp);
-          console.log(resp);
-        } else {
+  commands = getCommands();
+  let potentialCommand = data[0].trim().toLowerCase();
+  if (commands.hasOwnProperty(potentialCommand)) {
+    if (commands[potentialCommand].type === "chatGPT") {
+      runPrompt(data[1], commands[potentialCommand].prompt)
+        .then((resp) => {
+          if (resp) {
+            client.say(target, resp);
+            console.log(resp);
+          } else {
+            client.say(target, errMessage);
+          }
+        })
+        .catch((err) => {
           client.say(target, errMessage);
-        }
-      })
-      .catch((err) => {
-        client.say(target, errMessage);
-        console.log(err);
-      });
+          console.log(err);
+        });
+    } else {
+      client.say(target, commands[potentialCommand].prompt);
+    }
   }
 
-  switch (data[0].trim().toLowerCase()) {
-    case "!comedy":
-      client.say(
-        target,
-        '!seinfeld "Topic", !compliment "Someone". !butts Dont forget the quotes around topic ya jerk.'
-      );
+  switch (potentialCommand) {
+    case "!prompts":
+      let commandString = "Current Prompts";
+      for (let command in commands) {
+        commandString += " " + command;
+      }
+      commandString += ` !riddle !answerTo add an input to any command put "INPUT". Some commands will ignore this!`;
+      client.say(target, commandString);
       break;
     case "!riddle":
       riddleMeThis(context.username)
@@ -94,10 +102,7 @@ function onMessageHandler(target, context, msg, self) {
       break;
     default:
   }
-  if (
-    input.toLowerCase().includes("@hucksley_nash") ||
-    input.toLowerCase().includes("@huckleberry_nash")
-  ) {
+  if (input.toLowerCase().includes(config.twitchUser)) {
     chatWithBot(context.username, input)
       .then((resp) => {
         if (resp) {
