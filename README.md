@@ -1,5 +1,9 @@
 # TwitchGPT
 
+https://twitter.com/HucksleyNash
+
+https://www.twitch.tv/hucksley_nash
+
 Super simple twitch bot that uses chatGPT
 
 config.json is the file that you will configure the bot.
