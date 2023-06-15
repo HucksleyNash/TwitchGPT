@@ -10,6 +10,7 @@ const {
   answerMeThis,
   chatWithBot,
 } = require("./gpt.js");
+const { Console, debug } = require("console");
 
 const filePath = path.join(__dirname, "../commands.json");
 let commands = getCommands();
@@ -49,13 +50,15 @@ function onMessageHandler(target, context, msg, self) {
 
   // Remove whitespace from chat message
   const input = msg.trim();
+  console.log(input);
 
-  let data = input.split('"');
-  commands = getCommands();
-  let potentialCommand = data[0].trim().toLowerCase();
+  let data = input.split(" ");
+  let commands = getCommands();
+  let potentialCommand = data.shift().trim().toLowerCase();
+  let userInput = data.join(" ");
   if (commands.hasOwnProperty(potentialCommand)) {
     if (commands[potentialCommand].type === "chatGPT") {
-      runPrompt(data[1], commands[potentialCommand].prompt)
+      runPrompt(userInput, commands[potentialCommand].prompt)
         .then((resp) => {
           if (resp) {
             client.say(target, resp);
@@ -79,7 +82,7 @@ function onMessageHandler(target, context, msg, self) {
       for (let command in commands) {
         commandString += " " + command;
       }
-      commandString += ` !riddle !answerTo add an input to any command put "INPUT". Some commands will ignore this!`;
+      commandString += ` !riddle !answer You can add an input after some prompts!`;
       client.say(target, commandString);
       break;
     case "!riddle":

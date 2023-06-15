@@ -19,19 +19,5 @@
     "userLevel": "everyone",
     "coolDown": "60",
     "type": "chatGPT"
-  },
-  "!statictest": {
-    "trigger": "!statictest",
-    "prompt": "The Static Test was a success! My Guy!",
-    "userLevel": "everyone",
-    "coolDown": "60",
-    "type": "static"
-  },
-  "!tester2": {
-    "trigger": "!tester2",
-    "prompt": "I've Bippity Booooop my shit",
-    "userLevel": "everyone",
-    "coolDown": "60",
-    "type": "static"
   }
 }
