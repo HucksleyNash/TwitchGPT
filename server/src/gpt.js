@@ -19,7 +19,7 @@ async function runPrompt(prompt, command) {
       },
     ],
     temperature: 0.9,
-    max_tokens: 100,
+    max_tokens: 250,
     top_p: 1,
     frequency_penalty: 0.0,
     presence_penalty: 0.6,
@@ -36,17 +36,18 @@ async function chatWithBot(username, prompt) {
     messages: [
       {
         role: "user",
-        content: `You are a Twitch streamer, who is streaming live and interacting with your viewers. You see the message "${prompt}" from a user ${username} in the chat, and you need to respond to it in character. The response should be short, sweet and filled with gratitude.`,
+        content: `You are The twitch streamer ${config.streamer}, who is streaming live and interacting with your viewers. You see the message "${prompt}" from a user ${username} in the chat, and you need to respond to it in character. keep your response to less than 250 tokens, and do not start your response with ${config.streamer}`,
       },
     ],
     temperature: 0.9,
-    max_tokens: 100,
+    max_tokens: 250,
     top_p: 1,
     frequency_penalty: 0.0,
     presence_penalty: 0.6,
   });
 
   let text = response.data.choices[0].message.content;
+  // text = text.split(`:`)[1];
   return text;
 }
 
@@ -56,15 +57,14 @@ async function riddleMeThis(username) {
     messages: [
       {
         role: "user",
-        content: `Create a riddle that uses wordplay and puns 
-        and is no longer than 110 tokens in length. 
+        content: `Create a riddle that uses wordplay and puns. 
         The riddle should have a easy difficulty level and 
         the answer should be something common and easily recognizable. 
         Provide the answer to the riddle in the form of A: [riddle answer]`,
       },
     ],
     temperature: 0.8,
-    max_tokens: 150,
+    max_tokens: 250,
     top_p: 1,
     frequency_penalty: 0.0,
     presence_penalty: 0.6,

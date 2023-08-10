@@ -10,7 +10,6 @@ const {
   answerMeThis,
   chatWithBot,
 } = require("./gpt.js");
-const { Console, debug } = require("console");
 
 const filePath = path.join(__dirname, "../commands.json");
 let commands = getCommands();
@@ -61,8 +60,7 @@ function onMessageHandler(target, context, msg, self) {
       runPrompt(userInput, commands[potentialCommand].prompt)
         .then((resp) => {
           if (resp) {
-            client.say(target, resp);
-            console.log(resp);
+            sendResp(resp);
           } else {
             client.say(target, errMessage);
           }
@@ -89,7 +87,7 @@ function onMessageHandler(target, context, msg, self) {
       riddleMeThis(context.username)
         .then((resp) => {
           if (resp) {
-            client.say(target, resp);
+            sendResp(resp);
           } else {
             client.say(target, errMessage);
             console.log(err);
@@ -105,12 +103,11 @@ function onMessageHandler(target, context, msg, self) {
       break;
     default:
   }
-  if (input.toLowerCase().includes(config.twitchUser)) {
+  if (input.toLowerCase().includes(config.streamer)) {
     chatWithBot(context.username, input)
       .then((resp) => {
         if (resp) {
-          client.say(target, resp);
-          console.log(resp);
+          sendResp(resp);
         } else {
           client.say(target, errMessage);
         }
@@ -120,6 +117,30 @@ function onMessageHandler(target, context, msg, self) {
         console.log(err);
       });
   }
+}
+
+function sendResp(resp) {
+  let splitResp = resp.split(" ");
+  let i = 0;
+  let msg = "";
+  for (word of splitResp) {
+    msg += word + " ";
+    if (msg.length > 450) {
+      delaySend(target, msg, i);
+      i++;
+      msg = "";
+    }
+  }
+  if (msg.length > 0) {
+    delaySend(target, msg, i);
+  }
+}
+
+function delaySend(target, msg, count) {
+  setTimeout(() => {
+    client.say(target, msg);
+    console.log(msg);
+  }, count * 500);
 }
 
 // Called every time the bot connects to Twitch chat
