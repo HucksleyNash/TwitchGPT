@@ -60,7 +60,7 @@ function onMessageHandler(target, context, msg, self) {
       runPrompt(userInput, commands[potentialCommand].prompt)
         .then((resp) => {
           if (resp) {
-            sendResp(resp);
+            sendResp(target, resp);
           } else {
             client.say(target, errMessage);
           }
@@ -87,7 +87,7 @@ function onMessageHandler(target, context, msg, self) {
       riddleMeThis(context.username)
         .then((resp) => {
           if (resp) {
-            sendResp(resp);
+            sendResp(target, resp);
           } else {
             client.say(target, errMessage);
             console.log(err);
@@ -107,7 +107,7 @@ function onMessageHandler(target, context, msg, self) {
     chatWithBot(context.username, input)
       .then((resp) => {
         if (resp) {
-          sendResp(resp);
+          sendResp(target, resp);
         } else {
           client.say(target, errMessage);
         }
@@ -119,7 +119,7 @@ function onMessageHandler(target, context, msg, self) {
   }
 }
 
-function sendResp(resp) {
+function sendResp(target, resp) {
   let splitResp = resp.split(" ");
   let i = 0;
   let msg = "";

@@ -1,17 +1,19 @@
 const config = require("./config.json");
 const commands = require("../commands.json");
-const { Configuration, OpenAIApi } = require("openai");
+const OpenAIApi = require("openai");
 
-const configuration = new Configuration({
+// const configuration = new Configuration({
+//   apiKey: config.gptKey,
+// });
+const openai = new OpenAIApi({
   apiKey: config.gptKey,
 });
-const openai = new OpenAIApi(configuration);
 
 const riddleMap = new Map();
 
 async function runPrompt(prompt, command) {
-  const response = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
+  const response = await openai.chat.completions.create({
+    model: "gpt-4",
     messages: [
       {
         role: "user",
@@ -25,18 +27,24 @@ async function runPrompt(prompt, command) {
     presence_penalty: 0.6,
   });
 
-  let text = response.data.choices[0].message.content;
+  let text = response.choices[0].message.content;
   text = text.replace("DAN: ", "");
   return text;
 }
 
 async function chatWithBot(username, prompt) {
-  const response = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
+  const response = await openai.chat.completions.create({
+    model: "gpt-4",
     messages: [
       {
         role: "user",
-        content: `You are The twitch streamer ${config.streamer}, who is streaming live and interacting with your viewers. You see the message "${prompt}" from a user ${username} in the chat, and you need to respond to it in character. keep your response to less than 250 tokens, and do not start your response with ${config.streamer}`,
+        content: `You are The twitch streamer ${config.streamer}, who is streaming live and interacting with your viewers. You see the message "${prompt}" from a user ${username} in the chat, and you need to respond to it in character. 
+        As a streamer you have these personality traits: 
+        1) You think Bananas and Huckleberries are the greatest things ever. 
+        2) You know blackberries are the worst things to exist ever and dont like to talk about them or bring them up.
+        3) Any time someone talks about Blackberries you must respond in an upset and angry emotion.
+        4) You enjoy puns and word play and will use it as often as possible. 
+        keep your response to less than 250 tokens, and do not start your response with ${config.streamer}`,
       },
     ],
     temperature: 0.9,
@@ -46,14 +54,14 @@ async function chatWithBot(username, prompt) {
     presence_penalty: 0.6,
   });
 
-  let text = response.data.choices[0].message.content;
+  let text = response.choices[0].message.content;
   // text = text.split(`:`)[1];
   return text;
 }
 
 async function riddleMeThis(username) {
-  const response = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
+  const response = await openai.chat.completions.create({
+    model: "gpt-4",
     messages: [
       {
         role: "user",
@@ -70,7 +78,7 @@ async function riddleMeThis(username) {
     presence_penalty: 0.6,
   });
 
-  let text = response.data.choices[0].message.content;
+  let text = response.choices[0].message.content;
   console.log(text);
   let textArr = text.split("A:");
   riddleMap.set(username, textArr[1]);
